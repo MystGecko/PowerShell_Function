@@ -1,0 +1,24 @@
+function Mask-String {
+    param (
+        [Parameter(Mandatory=$true)]
+        [string]$String
+    )
+
+    if ($String.Length -le 4) {
+        # Si le mot de passe est très court, ne pas masquer
+        return '*' * $String.Length
+    }
+
+    $firstPart = $String.Substring(0, 2)
+    $lastPart = $String.Substring($String.Length - 2, 2)
+    $maskedPart = '*' * ($String.Length - 4)
+
+    return "$firstPart$maskedPart$lastPart"
+}
+# Masquer une chaîne de caractères avec une longueur supérieure à 4
+$maskedString = Mask-String -String "SuperSecretPassword"
+Write-Host "Masqué: $maskedString"
+
+# Masquer une chaîne de caractères avec une longueur de 4 ou moins
+$shortString = Mask-String -String "1234"
+Write-Host "Masqué: $shortString"
